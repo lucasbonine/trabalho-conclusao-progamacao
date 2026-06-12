@@ -1,0 +1,47 @@
+# Pipeline executada automaticamente de hora em hora.
+name: 03 - Testes agendados
+
+on:
+  schedule:
+    - cron: '0 */1 * * *' # executa de hora em hora, todos os dias
+      # posicoes: minuto, hora, dia do mes, mes e dia da semana
+
+permissions:
+  contents: read
+  checks: write
+
+jobs:
+  testes:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Baixar o codigo
+        uses: actions/checkout@v4
+
+      - name: Configurar o Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      - name: Executar testes e gerar relatorio
+        run: npx mocha --reporter xunit --reporter-option output=reports/test-results.xml
+
+      - name: Publicar resultado dos testes
+        if: always()
+        uses: dorny/test-reporter@v2
+        with:
+          name: Resultado dos testes - agendado
+          path: reports/test-results.xml
+          reporter: java-junit
+
+      - name: Armazenar relatorio
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: relatorio-testes-agendado
+          path: reports/test-results.xml
+          retention-days: 30
