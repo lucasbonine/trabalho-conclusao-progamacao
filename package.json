@@ -12,5 +12,8 @@
   "dependencies": {
     "mocha": "^11.7.5",
     "selenium-webdriver": "^4.43.0"
+  },
+  "devDependencies": {
+    "mochawesome": "^7.1.4"
   }
 }
