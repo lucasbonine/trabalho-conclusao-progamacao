@@ -1,7 +1,7 @@
 export class ServicoDePagamento {
   #pagamentos
 
-  constructor() {
+  constructor() { 
     this.#pagamentos = [];
   }
 
