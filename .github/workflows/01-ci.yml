@@ -1,8 +1,12 @@
-# Pipeline que pode ser executada manualmente pela aba Actions.
-name: 02 - Testes manuais
+# Pipeline executada por push, manualmente ou por agendamento.
+name: Pipeline de testes
 
 on:
+  push:
   workflow_dispatch:
+  schedule:
+    - cron: '0 */1 * * *' # executa de hora em hora, todos os dias
+      # posicoes: minuto, hora, dia do mes, mes e dia da semana
 
 permissions:
   contents: read
@@ -32,7 +36,7 @@ jobs:
         if: always()
         uses: dorny/test-reporter@v2
         with:
-          name: Resultado dos testes - manual
+          name: Resultado dos testes
           path: reports/test-results.xml
           reporter: java-junit
 
@@ -40,6 +44,6 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: relatorio-testes-manual
+          name: relatorio-testes
           path: reports/test-results.xml
           retention-days: 30

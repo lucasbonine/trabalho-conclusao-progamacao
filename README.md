@@ -11,15 +11,17 @@ npm install
 npx mocha
 ```
 
-## Pipelines
+## Pipeline
 
-As pipelines foram criadas com GitHub Actions e estão na pasta `.github/workflows`.
+A pipeline foi criada com GitHub Actions e está no arquivo `.github/workflows/01-ci.yml`.
 
-- `01-ci-push.yml`: executa a cada push.
-- `02-ci-manual.yml`: pode ser executada manualmente.
-- `03-ci-agendada.yml`: executa de hora em hora.
+Ela pode ser iniciada de três formas:
 
-Todas as pipelines instalam as dependências e executam os testes com Mocha.
+- a cada push;
+- manualmente pela aba Actions;
+- de hora em hora pelo agendamento.
+
+A pipeline possui um job com etapas para baixar o projeto, configurar o Node.js, instalar as dependências e executar os testes.
 
 ## Relatório
 
