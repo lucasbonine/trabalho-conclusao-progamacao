@@ -6,6 +6,10 @@ on:
     - cron: '0 */1 * * *' # executa de hora em hora, todos os dias
       # posicoes: minuto, hora, dia do mes, mes e dia da semana
 
+permissions:
+  contents: read
+  checks: write
+
 jobs:
   testes:
     runs-on: ubuntu-latest
@@ -24,12 +28,20 @@ jobs:
         run: npm ci
 
       - name: Executar testes e gerar relatorio
-        run: npx mocha --reporter mochawesome
+        run: npx mocha --reporter xunit --reporter-option output=reports/test-results.xml
+
+      - name: Publicar resultado dos testes
+        if: always()
+        uses: dorny/test-reporter@v2
+        with:
+          name: Resultado dos testes - agendado
+          path: reports/test-results.xml
+          reporter: java-junit
 
       - name: Armazenar relatorio
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: relatorio-testes-agendado
-          path: mochawesome-report
+          path: reports/test-results.xml
           retention-days: 30

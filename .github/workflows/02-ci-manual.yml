@@ -4,6 +4,10 @@ name: 02 - Testes manuais
 on:
   workflow_dispatch:
 
+permissions:
+  contents: read
+  checks: write
+
 jobs:
   testes:
     runs-on: ubuntu-latest
@@ -22,12 +26,20 @@ jobs:
         run: npm ci
 
       - name: Executar testes e gerar relatorio
-        run: npx mocha --reporter mochawesome
+        run: npx mocha --reporter xunit --reporter-option output=reports/test-results.xml
+
+      - name: Publicar resultado dos testes
+        if: always()
+        uses: dorny/test-reporter@v2
+        with:
+          name: Resultado dos testes - manual
+          path: reports/test-results.xml
+          reporter: java-junit
 
       - name: Armazenar relatorio
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: relatorio-testes-manual
-          path: mochawesome-report
+          path: reports/test-results.xml
           retention-days: 30

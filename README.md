@@ -8,7 +8,7 @@ Instale as dependências e rode os testes:
 
 ```bash
 npm install
-npx mocha --reporter mochawesome
+npx mocha
 ```
 
 ## Pipelines
@@ -23,6 +23,6 @@ Todas as pipelines instalam as dependências e executam os testes com Mocha.
 
 ## Relatório
 
-Os testes geram um relatório HTML na pasta `mochawesome-report`. O relatório é armazenado como artifact por 30 dias e pode ser baixado na execução da pipeline.
+Os testes geram um relatório no formato JUnit XML. O relatório é publicado na execução da pipeline e armazenado como artifact por 30 dias.
 
 O `if: always()` permite salvar o relatório mesmo quando algum teste falha.
